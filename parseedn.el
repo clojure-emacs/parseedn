@@ -30,7 +30,7 @@
 
 ;;; Code:
 
-;; The EDN spec is not clear about wether \u0123 and \o012 are supported in
+;; The EDN spec is not clear about whether \u0123 and \o012 are supported in
 ;; strings. They are described as character literals, but not as string escape
 ;; codes. In practice all implementations support them (mostly with broken
 ;; surrogate pair support), so we do the same. Sorry, emoji 🙁.
