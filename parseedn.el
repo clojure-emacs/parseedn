@@ -39,6 +39,7 @@
 ;; don't have the right forms.
 
 (require 'a)
+(require 'cl-lib)
 (require 'parseclj-parser)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
