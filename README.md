@@ -3,11 +3,11 @@
 # EDN parser for Emacs Lisp
 
 `parseedn` is an Emacs Lisp library for parsing [EDN
-data](https://github.com/edn-format/edn). It uses the
+data](https://github.com/edn-format/edn). It uses
 [`parseclj`](https://github.com/clojure-emacs/parseclj)'s shift-reduce parser
 internally.
 
-EDN and Emacs Lisp share some important differences that make translation from
+EDN and Emacs Lisp have some important differences that make translation from
 one to the other not transparent (think representing an EDN map into Elisp, or
 being able to differentiate between `false` and `nil` in Elisp).  Because of
 this, `parseedn` takes certain decisions when parsing and transforming EDN data
@@ -51,7 +51,7 @@ You can just copy-paste this code into your Emacs init file:
 
     Returns a string containing DATUM as EDN.  DATUM can be any Emacs Lisp
     value.
-    
+
 ## Prior art
 
 [edn.el](https://github.com/expez/edn.el) is an EDN-to-elisp parser based on the
