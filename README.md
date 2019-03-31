@@ -19,17 +19,30 @@ Lastly, `parseedn` is in **alpha** stage, so its API is subject to change.
 
 ## Installation
 
-Currently `parseend` is not part of [MELPA](http://melpa.milkbox.net/), so the
-best way to install it is by getting your own copy of `parseedn`, *and* its
-`parseclj` dependency, and putting it somewhere in your Emacs
-[`load-path`](https://www.emacswiki.org/emacs/LoadPath).
+Available on the major `package.el` community maintained repos -
+[MELPA Stable][] and [MELPA][] repos.
 
-You can just copy-paste this code into your Emacs init file:
+MELPA Stable is the recommended repo as it has the latest stable
+version.  MELPA has a development snapshot for users who don't mind
+(infrequent) breakage but don't want to run from a git checkout.
 
-```emacs-lisp
-(add-to-list 'load-path "/path/to/your/copy/of/parseclj/")
-(add-to-list 'load-path "/path/to/your/copy/of/parseedn/")
+You can install `parseedn` using the following command:
+
+<kbd>M-x package-install [RET] parseedn [RET]</kbd>
+
+or if you'd rather keep it in your dotfiles:
+
+```el
+(unless (package-installed-p 'parseedn)
+  (package-install 'parseedn))
 ```
+
+If the installation doesn't work try refreshing the package list:
+
+<kbd>M-x package-refresh-contents</kbd>
+
+[melpa]: http://melpa.org
+[melpa stable]: http://stable.melpa.org
 
 ## Usage
 
