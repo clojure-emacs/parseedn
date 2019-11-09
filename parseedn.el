@@ -141,16 +141,16 @@ TAG-READERS is an optional association list.  For more information, see
       (insert " ")
       (parseedn-print-seq next))))
 
-(defun parseedn-print-kvs (map)
+(defun parseedn-print-kvs (map &optional ks)
   "Insert hash table MAP as an EDN map into the current buffer."
-  (let ((keys (a-keys map)))
+  (let ((keys (or ks (a-keys map))))
     (parseedn-print (car keys))
     (insert " ")
     (parseedn-print (a-get map (car keys)))
     (let ((next (cdr keys)))
       (when (not (seq-empty-p next))
         (insert ", ")
-        (parseedn-print-kvs next)))))
+        (parseedn-print-kvs map next)))))
 
 (defun parseedn-print (datum)
   "Insert DATUM as EDN into the current buffer.
