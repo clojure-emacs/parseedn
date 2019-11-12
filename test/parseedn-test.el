@@ -28,9 +28,9 @@
 ;;; Code
 
 (require 'ert)
-(require 'parseclj)
+(require 'parseedn)
 
-(load "test/parseclj-test-data.el")
+(load "test/parseedn-test-data.el")
 
 (ert-deftest parseedn-print-test ()
   (should (equal (parseedn-print-str nil) "nil"))
@@ -56,7 +56,7 @@
                        (insert ,(a-get data :source))
                        (goto-char 1)
                        (should (a-equal (parseedn-read) ',(a-get data :edn)))))))))
-        parseclj-test-data)))
+        parseedn-test-data)))
 
 (defmacro define-parseedn-roundtrip-tests ()
   `(progn
@@ -69,7 +69,7 @@
                   `(ert-deftest ,test-name ()
                      :tags '(parseedn-rountrip)
                      (should (equal (parseedn-print-str (car ',(a-get data :edn))) ,(a-get data :source))))))))
-        parseclj-test-data)))
+        parseedn-test-data)))
 
 (define-parseedn-read-tests)
 (define-parseedn-roundtrip-tests)
