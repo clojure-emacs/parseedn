@@ -30,7 +30,7 @@
 ;;; Code:
 
 (require 'ert)
-(require 'parseclj)
+(require 'parseedn)
 (eval-when-compile (require 'subr-x)) ;; for things like hash-table-keys
 
 (ert-deftest whitespace ()
