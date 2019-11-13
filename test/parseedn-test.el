@@ -37,7 +37,19 @@
   (should (equal (parseedn-print-str 100) "100"))
   (should (equal (parseedn-print-str 1.2) "1.2"))
   (should (equal (parseedn-print-str [1 2 3]) "[1 2 3]"))
-  (should (equal (parseedn-print-str t) "true")))
+  (should (equal (parseedn-print-str t) "true"))
+  (should (listp (member (parseedn-print-str
+                          (let ((ht (make-hash-table)))
+                            (puthash :a 1 ht)
+                            (puthash :b 2 ht)
+                            (puthash :c 3 ht)
+                            ht))
+                         '("{:a 1, :b 2, :c 3}"
+                           "{:a 1, :c 3, :b 2}"
+                           "{:b 2, :a 1, :c 3}"
+                           "{:b 2, :c 3, :a 1}"
+                           "{:c 3, :a 1, :b 2}"
+                           "{:c 3, :b 2, :a 1}")))))
 
 (ert-deftest parseedn-read-test ()
   (should (equal (parseedn-read-str "true") t)))
