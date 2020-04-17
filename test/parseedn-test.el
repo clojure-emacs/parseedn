@@ -39,7 +39,7 @@
   (should (equal (parseedn-print-str [1 2 3]) "[1 2 3]"))
   (should (equal (parseedn-print-str t) "true"))
   (should (equal (parseedn-print-str '((a . 1) (b . 2))) "{a 1, b 2}"))
-  (should (equal (parseedn-print-str '((a . 1) (b . ((c . 3))))) "{:a 1, :b {:c 3}}"))
+  (should (equal (parseedn-print-str '((a . 1) (b . ((c . 3))))) "{a 1, b {c 3}}"))
   (should (equal (parseedn-print-str '(:a 1 :b 2)) "{:a 1, :b 2}"))
   (should (equal (parseedn-print-str '(:a 1 :b (:c 3))) "{:a 1, :b {:c 3}}"))
   (should (listp (member (parseedn-print-str
