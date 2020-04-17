@@ -141,8 +141,8 @@ TAG-READERS is an optional association list.  For more information, see
       (insert " ")
       (parseedn-print-seq next))))
 
-(defun parseedn-print-kvs (map &optional ks)
-  "Insert hash table MAP as an EDN map into the current buffer."
+(defun parseedn-print-hash-or-alist (map &optional ks)
+  "Insert hash table MAP or elisp a-list as an EDN map into the current buffer."
   (let ((keys (or ks (a-keys map))))
     (parseedn-print (car keys))
     (insert " ")
@@ -151,6 +151,34 @@ TAG-READERS is an optional association list.  For more information, see
       (when (not (seq-empty-p next))
         (insert ", ")
         (parseedn-print-kvs map next)))))
+
+(defun parseedn-print-plist (plist)
+  "Insert an elisp property list as an EDN map into the current buffer."
+  (parseedn-print (car plist))
+  (insert " ")
+  (parseedn-print (cadr plist))
+  (let ((next (cddr plist)))
+    (when (not (seq-empty-p next))
+      (insert ", ")
+      (parseedn-print-plist next))))
+
+(defun parseedn-alist-p (list)
+  "Non-null if and only if LIST is an alist with simple keys."
+  (while (consp list)
+    (setq list (if (and (consp (car list))
+                        (atom (caar list)))
+                   (cdr list)
+                 'not-alist)))
+  (null list))
+
+(defun parseedn-plist-p (list)
+  "Non-null if and only if LIST is a plist with keyword keys."
+  (while (consp list)
+    (setq list (if (and (keywordp (car list))
+                        (consp (cdr list)))
+                   (cddr list)
+                 'not-plist)))
+  (null list))
 
 (defun parseedn-print (datum)
   "Insert DATUM as EDN into the current buffer.
@@ -175,19 +203,30 @@ DATUM can be any Emacs Lisp value."
    ((eq t datum)
     (insert "true"))
 
-   ((symbolp datum)
+   ((or (keywordp datum) (symbolp datum))
     (insert (symbol-name datum)))
 
    ((vectorp datum) (insert "[") (parseedn-print-seq datum) (insert "]"))
 
+   ((or (hash-table-p datum) (parseedn-alist-p datum))
+    (insert "{")
+    (parseedn-print-hash-or-alist datum)
+    (insert "}"))
+
+   ((parseedn-plist-p datum)
+    (insert "{")
+    (parseedn-print-plist datum)
+    (insert "}"))
+   
    ((consp datum)
     (cond
+     ((not (listp (cdr datum))) ; dotted pair
+      (error "Don't know how to print: %s" datum))
      ((eq 'edn-set (car datum))
       (insert "#{") (parseedn-print-seq (cadr datum)) (insert "}"))
      (t (insert "(") (parseedn-print-seq datum) (insert ")"))))
 
-   ((hash-table-p datum)
-    (insert "{") (parseedn-print-kvs datum) (insert "}"))))
+   (t (error "Don't know how to print: %s" datum))))
 
 (defun parseedn-print-str (datum)
   "Return a string containing DATUM as EDN.
