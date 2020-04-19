@@ -150,7 +150,7 @@ TAG-READERS is an optional association list.  For more information, see
     (let ((next (cdr keys)))
       (when (not (seq-empty-p next))
         (insert ", ")
-        (parseedn-print-kvs map next)))))
+        (parseedn-print-hash-or-alist map next)))))
 
 (defun parseedn-print-plist (plist)
   "Insert an elisp property list as an EDN map into the current buffer."
@@ -217,7 +217,7 @@ DATUM can be any Emacs Lisp value."
     (insert "{")
     (parseedn-print-plist datum)
     (insert "}"))
-   
+
    ((consp datum)
     (cond
      ((not (listp (cdr datum))) ; dotted pair
