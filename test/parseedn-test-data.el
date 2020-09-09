@@ -340,6 +340,16 @@
        "booleans"
        (a-list
         :source "[nil true false]"
-        :edn '([nil t nil]))))
+        :edn '([nil t nil]))
+
+       "uuid"
+       (a-list
+        :source "#uuid \"c9c4eac2-7b23-4d62-a444-41a72dc09039\""
+        :edn '((edn-uuid "c9c4eac2-7b23-4d62-a444-41a72dc09039")))
+
+       "inst"
+       (a-list
+        :source "#inst \"2020-09-09T06:56:04\""
+        :edn '((edn-inst 24408 24676 )))))
 
 ;;; parseedn-test-data.el ends here
