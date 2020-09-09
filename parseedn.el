@@ -162,6 +162,13 @@ TAG-READERS is an optional association list.  For more information, see
       (insert ", ")
       (parseedn-print-plist next))))
 
+(defun parseedn-print-inst (time)
+  "Insert an inst value into the current buffer.
+
+Take an encode-time style value and print it as a timestamp
+deliniated by double quotes."
+  (insert (format-time-string "\"%Y-%m-%dT%T\"" time)))
+
 (defun parseedn-alist-p (list)
   "Non-null if and only if LIST is an alist with simple keys."
   (while (consp list)
@@ -224,6 +231,10 @@ DATUM can be any Emacs Lisp value."
       (error "Don't know how to print: %s" datum))
      ((eq 'edn-set (car datum))
       (insert "#{") (parseedn-print-seq (cadr datum)) (insert "}"))
+     ((eq 'edn-uuid (car datum))
+      (insert "#uuid ") (parseedn-print-seq (cdr datum)))
+     ((eq 'edn-inst (car datum))
+      (insert "#inst ") (parseedn-print-inst (cdr datum)))
      (t (insert "(") (parseedn-print-seq datum) (insert ")"))))
 
    (t (error "Don't know how to print: %s" datum))))
