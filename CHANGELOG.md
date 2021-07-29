@@ -2,6 +2,8 @@
 
 ## Added
 
+- Added print handler for `#uuid` and `#inst`
+
 ## Fixed
 
 ## Changed
