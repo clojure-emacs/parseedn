@@ -4,7 +4,7 @@
 
 ;; Author: Arne Brasseur <arne@arnebrasseur.net>
 ;; Keywords: lisp clojure edn parser
-;; Package-Requires: ((emacs "25") (a "0.1.0alpha4") (parseclj "0.1.0"))
+;; Package-Requires: ((emacs "25") (parseclj "0.2.0") (map "2"))
 ;; Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
@@ -47,18 +47,18 @@
 ;; Note that this is kind of broken, we don't correctly detect if \u or \o forms
 ;; don't have the right forms.
 
-(require 'a)
 (require 'cl-lib)
+(require 'map)
 (require 'parseclj-parser)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Reader
 
 (defvar parseedn-default-tag-readers
-  (a-list 'inst (lambda (s)
-                  (cl-list* 'edn-inst (date-to-time s)))
-          'uuid (lambda (s)
-                  (list 'edn-uuid s)))
+  (list (cons 'inst (lambda (s)
+                      (cl-list* 'edn-inst (date-to-time s))))
+        (cons 'uuid (lambda (s)
+                      (list 'edn-uuid s))))
   "Default reader functions for handling tagged literals in EDN.
 These are the ones defined in the EDN spec, #inst and #uuid.  It
 is not recommended you change this variable, as this globally
@@ -84,7 +84,7 @@ CHILDREN is a collection elisp values to be reduced into an elisp
 sequence.
 OPTIONS is an association list.  See `parseclj-parse' for more information
 on available options."
-  (let ((tag-readers (a-merge parseedn-default-tag-readers (a-get options :tag-readers)))
+  (let ((tag-readers (map-merge 'alist parseedn-default-tag-readers (alist-get :tag-readers options)))
         (token-type (parseclj-lex-token-type opening-token)))
     (if (eq token-type :discard)
         stack
@@ -100,10 +100,10 @@ on available options."
                               (puthash (car pair) (cadr pair) hash-map))
                             kvs)
                     hash-map))
-         (:tag (let* ((tag (intern (substring (a-get opening-token :form) 1)))
-                      (reader (a-get tag-readers tag :missing)))
+         (:tag (let* ((tag (intern (substring (alist-get :form opening-token) 1)))
+                      (reader (alist-get tag tag-readers :missing)))
                  (when (eq :missing reader)
-                   (user-error "No reader for tag #%S in %S" tag (a-keys tag-readers)))
+                   (user-error "No reader for tag #%S in %S" tag (map-keys tag-readers)))
                  (funcall reader (car children)))))
        stack))))
 
@@ -116,7 +116,7 @@ identifying *tags*, and values are tag handler functions that receive one
 argument: *the tagged element*, and specify how to interpret it."
   (parseclj-parser #'parseedn-reduce-leaf
                    #'parseedn-reduce-branch
-                   (a-list :tag-readers tag-readers)))
+                   (list (cons :tag-readers tag-readers))))
 
 (defun parseedn-read-str (s &optional tag-readers)
   "Parse string S as EDN.
@@ -142,11 +142,12 @@ TAG-READERS is an optional association list.  For more information, see
       (parseedn-print-seq next))))
 
 (defun parseedn-print-hash-or-alist (map &optional ks)
-  "Insert hash table MAP or elisp a-list as an EDN map into the current buffer."
-  (let ((keys (or ks (a-keys map))))
+  "Insert hash table MAP or elisp alist as an EDN map into the current buffer."
+  (let ((alist? (listp map))
+        (keys (or ks (map-keys map))))
     (parseedn-print (car keys))
     (insert " ")
-    (parseedn-print (a-get map (car keys)))
+    (parseedn-print (map-elt map (car keys)))
     (let ((next (cdr keys)))
       (when (not (seq-empty-p next))
         (insert ", ")
