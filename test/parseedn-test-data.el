@@ -1,6 +1,6 @@
 ;;; parseedn-test-data.el --- Clojure/EDN parser - test data
 
-;; Copyright (C) 2017-2018  Arne Brasseur
+;; Copyright (C) 2017-2021  Arne Brasseur
 
 ;; Author: Arne Brasseur <arne@arnebrasseur.net>
 

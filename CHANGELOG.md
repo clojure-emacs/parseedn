@@ -1,23 +1,21 @@
 # Unreleased
 
-## Added
+## 1.0.0 (2021-09-27)
+
+### Added
 
 - Added print handler for `#uuid` and `#inst`
 
-## Fixed
+## 0.2.0 (2020-09-09 / d25ebc5)
 
-## Changed
-
-# 0.2.0 (2020-09-09 / d25ebc5)
-
-## Added
+### Added
 
 - Add support for alist, plist and an explicit error for unsupported dotted pair notation.
 
-## Fixed
+### Fixed
 
 - Fix printing of hash-maps with multiple entries.
 
-# 0.1.0 (2019-03-31 / ddf824b)
+## 0.1.0 (2019-03-31 / ddf824b)
 
 Initial release of parseedn
