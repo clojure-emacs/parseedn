@@ -4,8 +4,8 @@
 
 ;; Author: Arne Brasseur <arne@arnebrasseur.net>
 ;; Keywords: lisp clojure edn parser
-;; Package-Requires: ((emacs "25") (parseclj "1.0.2") (map "2"))
-;; Version: 1.0.0
+;; Package-Requires: ((emacs "25") (parseclj "1.0.3") (map "2"))
+;; Version: 1.0.3
 
 ;; This file is not part of GNU Emacs.
 
