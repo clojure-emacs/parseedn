@@ -1,5 +1,9 @@
 # Unreleased
 
+## 1.0.2 (2021-09-29)
+
+- Update parseclj dependency to 1.0.2
+
 ## 1.0.0 (2021-09-27)
 
 ### Added
