@@ -1,5 +1,9 @@
 # Unreleased
 
+## 1.0.4 (2021-09-30)
+
+- Drop use of (map-merge 'alist) for older Emacsen
+
 ## 1.0.3 (2021-09-29)
 
 - Follow upstream parseclj versioning
