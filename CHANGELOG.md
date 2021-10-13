@@ -1,33 +1,35 @@
-# Unreleased
+# 1.0.5 (2021-10-13)
 
-## 1.0.4 (2021-09-30)
+- [#10](https://github.com/clojure-emacs/parseedn/pull/10) Replace `cl-case` with `cond`
+
+# 1.0.4 (2021-09-30)
 
 - Drop use of (map-merge 'alist) for older Emacsen
 
-## 1.0.3 (2021-09-29)
+# 1.0.3 (2021-09-29)
 
 - Follow upstream parseclj versioning
 
-## 1.0.2 (2021-09-29)
+# 1.0.2 (2021-09-29)
 
 - Follow upstream parseclj versioning
 
-## 1.0.0 (2021-09-27)
+# 1.0.0 (2021-09-27)
 
-### Added
+## Added
 
 - Added print handler for `#uuid` and `#inst`
 
-## 0.2.0 (2020-09-09 / d25ebc5)
+# 0.2.0 (2020-09-09 / d25ebc5)
 
-### Added
+## Added
 
 - Add support for alist, plist and an explicit error for unsupported dotted pair notation.
 
-### Fixed
+## Fixed
 
 - Fix printing of hash-maps with multiple entries.
 
-## 0.1.0 (2019-03-31 / ddf824b)
+# 0.1.0 (2019-03-31 / ddf824b)
 
 Initial release of parseedn
