@@ -1,3 +1,7 @@
+# 1.0.6 (2021-10-13)
+
+- Make sure parseedn and parseclj versions are in sync
+
 # 1.0.5 (2021-10-13)
 
 - [#10](https://github.com/clojure-emacs/parseedn/pull/10) Replace `cl-case` with `cond`
