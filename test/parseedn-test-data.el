@@ -277,7 +277,10 @@
 
        "tag-1"
        (a-list
+        :tags '(:edn-roundtrip)
+        :tag-readers '((:default . parseedn-tagged-literal))
         :source "#foo/bar [1]"
+        :edn '((edn-tagged-literal foo/bar [1]))
         :ast '((:node-type . :root)
                (:position . 1)
                (:children . (((:node-type . :tag)
@@ -292,7 +295,10 @@
 
        "tag-2"
        (a-list
+        :tags '(:edn-roundtrip)
+        :tag-readers '((:default . parseedn-tagged-literal))
         :source "(fn #param :param-name 1)"
+        :edn '((fn (edn-tagged-literal param :param-name) 1))
         :ast '((:node-type . :root)
                (:position . 1)
                (:children . (((:node-type . :list)
@@ -315,6 +321,9 @@
 
        "nested-tags"
        (a-list
+        :tags '(:edn-roundtrip)
+        :tag-readers '((:default . parseedn-tagged-literal))
+        :edn (list (vector `(edn-tagged-literal lazy-error (edn-tagged-literal error ,(a-hash-table :cause "Divide by zero")))))
         :source "[#lazy-error #error {:cause \"Divide by zero\"}]"
         :ast '((:node-type . :root)
                (:position . 1)

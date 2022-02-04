@@ -43,6 +43,8 @@
   (should (equal (parseedn-print-str '((a . 1) (b . ((c . 3))))) "{a 1, b {c 3}}"))
   (should (equal (parseedn-print-str '(:a 1 :b 2)) "{:a 1, :b 2}"))
   (should (equal (parseedn-print-str '(:a 1 :b (:c 3))) "{:a 1, :b {:c 3}}"))
+  (should (equal (parseedn-print-str '(edn-tagged-literal unknown "data")) "#unknown \"data\""))
+  (should (equal (parseedn-print-str '(edn-tagged-literal unknown (edn-tagged-literal unknown "data"))) "#unknown #unknown \"data\""))
   (should (listp (member (parseedn-print-str
                           (let ((ht (make-hash-table)))
                             (puthash :a 1 ht)
@@ -59,6 +61,20 @@
 (ert-deftest parseedn-read-test ()
   (should (equal (parseedn-read-str "true") t)))
 
+(ert-deftest parseedn-tagged-literal-test ()
+  (let ((data "#unknown \"data\"")
+        (expected '(edn-tagged-literal unknown "data")))
+    ;; Default reader can be passed as a function
+    (should (equal expected (parseedn-read-str data `((:default . ,#'parseedn-tagged-literal)))))
+    ;; Default reader can be passed as a symbol
+    (should (equal expected (parseedn-read-str data '((:default . parseedn-tagged-literal)))))
+    ;; Default reader can be bound to a function
+    (let ((parseedn-default-data-reader-fn #'parseedn-tagged-literal))
+      (should (equal expected (parseedn-read-str data))))
+    ;; Default reader can be bound to a symbol
+    (let ((parseedn-default-data-reader-fn 'parseedn-tagged-literal))
+      (should (equal expected (parseedn-read-str data))))))
+
 (defmacro define-parseedn-read-tests ()
   `(progn
      ,@(mapcar
@@ -72,7 +88,8 @@
                      (with-temp-buffer
                        (insert ,(a-get data :source))
                        (goto-char 1)
-                       (should (a-equal (parseedn-read) ',(a-get data :edn)))))))))
+                       (should (a-equal (parseedn-read ',(a-get data :tag-readers))
+                                        ',(a-get data :edn)))))))))
         parseedn-test-data)))
 
 (defmacro define-parseedn-roundtrip-tests ()
