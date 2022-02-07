@@ -1,3 +1,8 @@
+# 1.1.0 (2022-02-07)
+
+- [#11](https://github.com/clojure-emacs/parseedn/pull/11) Support a default-data-reader for tagged literals
+- Via parseclj: support bigint
+
 # 1.0.6 (2021-10-13)
 
 - Make sure parseedn and parseclj versions are in sync
