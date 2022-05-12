@@ -156,7 +156,8 @@ TAG-READERS is an optional association list.  For more information, see
 
 (defun parseedn-print-seq (coll)
   "Insert sequence COLL as EDN into the current buffer."
-  (parseedn-print (elt coll 0))
+  (unless (seq-empty-p coll)
+    (parseedn-print (elt coll 0)))
   (let ((next (seq-drop coll 1)))
     (when (not (seq-empty-p next))
       (insert " ")
