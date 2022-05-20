@@ -37,6 +37,8 @@
   (should (equal (parseedn-print-str nil) "nil"))
   (should (equal (parseedn-print-str 100) "100"))
   (should (equal (parseedn-print-str 1.2) "1.2"))
+  (should (equal (parseedn-print-str []) "[]"))
+  (should (equal (parseedn-print-str '(edn-set ())) "#{}"))           
   (should (equal (parseedn-print-str [1 2 3]) "[1 2 3]"))
   (should (equal (parseedn-print-str t) "true"))
   (should (equal (parseedn-print-str '((a . 1) (b . 2))) "{a 1, b 2}"))
