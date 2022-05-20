@@ -156,12 +156,12 @@ TAG-READERS is an optional association list.  For more information, see
 
 (defun parseedn-print-seq (coll)
   "Insert sequence COLL as EDN into the current buffer."
-  (unless (seq-empty-p coll)
-    (parseedn-print (elt coll 0)))
-  (let ((next (seq-drop coll 1)))
-    (when (not (seq-empty-p next))
+  (when (not (seq-empty-p coll))
+    (while (not (seq-empty-p coll))
+      (parseedn-print (elt coll 0))
       (insert " ")
-      (parseedn-print-seq next))))
+      (setq coll (seq-drop coll 1)))
+    (delete-char -1)))
 
 (defun parseedn-print-hash-or-alist (map &optional ks)
   "Insert hash table MAP or elisp alist as an EDN map into the current buffer."
