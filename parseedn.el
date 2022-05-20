@@ -165,7 +165,7 @@ TAG-READERS is an optional association list.  For more information, see
 
 (defun parseedn-print-hash-or-alist (map &optional ks)
   "Insert hash table MAP or elisp alist as an EDN map into the current buffer."
-  (let ((keys (or ks (map-keys map))))
+  (when-let ((keys (or ks (map-keys map))))
     (parseedn-print (car keys))
     (insert " ")
     (parseedn-print (map-elt map (car keys)))

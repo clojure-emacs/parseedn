@@ -45,6 +45,7 @@
   (should (equal (parseedn-print-str '(:a 1 :b (:c 3))) "{:a 1, :b {:c 3}}"))
   (should (equal (parseedn-print-str '(edn-tagged-literal unknown "data")) "#unknown \"data\""))
   (should (equal (parseedn-print-str '(edn-tagged-literal unknown (edn-tagged-literal unknown "data"))) "#unknown #unknown \"data\""))
+  (should (equal (parseedn-print-str #s(hash-table size 0 data ())) "{}"))
   (should (listp (member (parseedn-print-str
                           (let ((ht (make-hash-table)))
                             (puthash :a 1 ht)
