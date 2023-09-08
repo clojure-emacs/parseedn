@@ -245,6 +245,56 @@
                                              (:form . "123")
                                              (:value . 123)))))))))
 
+       "prefixed-map-1"
+       (a-list
+        :source "#:foo.bar{:baz 1 :other.ns.prefix/qux 2}"
+        :edn (list (a-hash-table :foo.bar/baz 1 :other.ns.prefix/qux 2))
+        :ast '((:node-type . :root)
+               (:position . 1)
+               (:children . (((:map-prefix
+                               (:token-type . :map-prefix)
+                               (:form . "#:foo.bar")
+                               (:pos . 1))
+                              (:node-type . :map)
+                              (:position . 10)
+                              (:children . (((:node-type . :keyword)
+                                             (:position . 11)
+                                             (:form . ":baz")
+                                             (:value . :baz))
+                                            ((:node-type . :number)
+                                             (:position . 16)
+                                             (:form . "1")
+                                             (:value . 1))
+                                            ((:node-type . :keyword)
+                                             (:position . 18)
+                                             (:form . ":other.ns.prefix/qux")
+                                             (:value . :other.ns.prefix/qux))
+                                            ((:node-type . :number)
+                                             (:position . 39)
+                                             (:form . "2")
+                                             (:value . 2)))))))))
+
+       "prefixed-map-2"
+       (a-list
+        :source "#:foo.bar {:baz 1}"
+        :edn (list (a-hash-table :foo.bar/baz 1))
+        :ast '((:node-type . :root)
+               (:position . 1)
+               (:children . (((:map-prefix
+                               (:token-type . :map-prefix)
+                               (:form . "#:foo.bar")
+                               (:pos . 1))
+                              (:node-type . :map)
+                              (:position . 10)
+                              (:children . (((:node-type . :keyword)
+                                             (:position . 11)
+                                             (:form . ":baz")
+                                             (:value . :baz))
+                                            ((:node-type . :number)
+                                             (:position . 16)
+                                             (:form . "1")
+                                             (:value . 1)))))))))
+
        "set"
        (a-list
         :tags '(:edn-roundtrip)
