@@ -113,10 +113,24 @@ on available options."
         ((eq :lbracket token-type) (apply #'vector children))
         ((eq :set token-type) (list 'edn-set children))
         ((eq :lbrace token-type) (let* ((kvs (seq-partition children 2))
-                                        (hash-map (make-hash-table :test 'equal :size (length kvs))))
+                                        (hash-map (make-hash-table :test 'equal :size (length kvs)))
+                                        (prefixed-map? (eq :map-prefix (parseclj-lex-token-type (car stack))))
+                                        (map-prefix (when prefixed-map?
+                                                      ;; map-prefix forms are always "#:...."
+                                                      (substring (parseclj-lex-token-form (car stack)) 2))))
                                    (seq-do (lambda (pair)
-                                             (puthash (car pair) (cadr pair) hash-map))
+                                             (let* ((k (if (not prefixed-map?)
+                                                           (car pair)
+                                                         (let ((key-name (substring (symbol-name (car pair)) 1)))
+                                                           (if (string-match-p "/" key-name)
+                                                               ;; keyword is already qualified, we must not add the prefix.
+                                                               (car pair)
+                                                             (intern (concat ":" map-prefix "/" key-name))))))
+                                                    (v (cadr pair)))
+                                               (puthash k v hash-map)))
                                            kvs)
+                                   (when prefixed-map?
+                                     (setq stack (cdr stack)))
                                    hash-map))
         ((eq :tag token-type) (let* ((tag (intern (substring (alist-get :form opening-token) 1)))
                                      (reader (alist-get tag tag-readers))
