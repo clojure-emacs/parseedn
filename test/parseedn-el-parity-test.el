@@ -225,7 +225,7 @@
 
 (ert-deftest inst ()
   :tags '(edn inst)
-  (let* ((inst-str "#inst \"1985-04-12T23:20:50.52Z\"")
+  (let* ((inst-str   "#inst \"1985-04-12T23:20:50.52Z\"")
          (inst (parseedn-read-str inst-str))
          (time (date-to-time "1985-04-12T23:20:50.52Z")))
     (should (eq 'edn-inst (car inst)))

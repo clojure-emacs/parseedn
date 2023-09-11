@@ -3,8 +3,9 @@
 ;; Copyright (C) 2017-2021  Arne Brasseur
 
 ;; Author: Arne Brasseur <arne@arnebrasseur.net>
+;; URL: http://www.github.com/clojure-emacs/parseedn
 ;; Keywords: lisp clojure edn parser
-;; Package-Requires: ((emacs "26") (parseclj "1.1.0") (map "2"))
+;; Package-Requires: ((emacs "26") (parseclj "1.1.0") (map "2") (a "1.0.0"))
 ;; Version: 1.1.0
 
 ;; This file is not part of GNU Emacs.
@@ -32,7 +33,7 @@
 ;; EDN and Emacs Lisp have some important differences that make
 ;; translation from one to the other not transparent (think
 ;; representing an EDN map into Elisp, or being able to differentiate
-;; between false and nil in Elisp). Because of this, parseedn takes
+;; between false and nil in Elisp).  Because of this, parseedn takes
 ;; certain decisions when parsing and transforming EDN data into Elisp
 ;; data types.  For more information please refer to parseclj's design
 ;; documentation.
@@ -164,7 +165,8 @@ TAG-READERS is an optional association list.  For more information, see
     (delete-char -1)))
 
 (defun parseedn-print-hash-or-alist (map &optional ks)
-  "Insert hash table MAP or elisp alist as an EDN map into the current buffer."
+  "Insert hash table MAP or elisp alist as an EDN map into the current buffer.
+Selects KS from MAP if specified, otherwise all keys will be selected."
   (when-let ((keys (or ks (map-keys map))))
     (parseedn-print (car keys))
     (insert " ")
@@ -175,7 +177,7 @@ TAG-READERS is an optional association list.  For more information, see
         (parseedn-print-hash-or-alist map next)))))
 
 (defun parseedn-print-plist (plist)
-  "Insert an elisp property list as an EDN map into the current buffer."
+  "Insert an elisp property list PLIST as an EDN map into the current buffer."
   (parseedn-print (car plist))
   (insert " ")
   (parseedn-print (cadr plist))
@@ -185,9 +187,9 @@ TAG-READERS is an optional association list.  For more information, see
       (parseedn-print-plist next))))
 
 (defun parseedn-print-inst (time)
-  "Insert an inst value into the current buffer.
+  "Insert an inst value TIME into the current buffer.
 
-Take an encode-time style value and print it as a timestamp
+Take an `encode-time' style value and print it as a timestamp
 deliniated by double quotes."
   (insert (format-time-string "\"%Y-%m-%dT%T\"" time)))
 

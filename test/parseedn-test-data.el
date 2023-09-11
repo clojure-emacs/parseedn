@@ -27,6 +27,8 @@
 
 ;;; Code:
 
+(require 'a)
+
 (setq parseedn-test-data
       (a-list
 
