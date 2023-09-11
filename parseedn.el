@@ -5,7 +5,7 @@
 ;; Author: Arne Brasseur <arne@arnebrasseur.net>
 ;; URL: http://www.github.com/clojure-emacs/parseedn
 ;; Keywords: lisp clojure edn parser
-;; Package-Requires: ((emacs "26") (parseclj "1.1.0") (map "2") (a "1.0.0"))
+;; Package-Requires: ((emacs "26") (parseclj "1.1.0") (map "2"))
 ;; Version: 1.1.0
 
 ;; This file is not part of GNU Emacs.
