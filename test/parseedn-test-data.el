@@ -36,295 +36,95 @@
        (a-list
         :tags '(:edn-roundtrip)
         :source "(1 2 3)"
-        :edn '((1 2 3))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :number)
-                                             (:position . 2)
-                                             (:form . "1")
-                                             (:value . 1))
-                                            ((:node-type . :number)
-                                             (:position . 4)
-                                             (:form . "2")
-                                             (:value . 2))
-                                            ((:node-type . :number)
-                                             (:position . 6)
-                                             (:form . "3")
-                                             (:value . 3)))))))))
+        :edn '((1 2 3)))
 
 
        "empty-list"
        (a-list
         :source "()"
-        :edn '(())
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . nil))))))
+        :edn '(()))
 
        "size-1"
        (a-list
         :tags '(:edn-roundtrip)
         :source "(1)"
-        :edn '((1))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :number)
-                                             (:position . 2)
-                                             (:form . "1")
-                                             (:value . 1)))))))))
+        :edn '((1)))
 
        "leafs"
        (a-list
         :source "(nil true false hello-world)"
-        :edn '((nil t nil hello-world))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :nil)
-                                             (:position . 2)
-                                             (:form . "nil")
-                                             (:value . nil))
-                                            ((:node-type . :true)
-                                             (:position . 6)
-                                             (:form . "true")
-                                             (:value . t))
-                                            ((:node-type . :false)
-                                             (:position . 11)
-                                             (:form . "false")
-                                             (:value . nil))
-                                            ((:node-type . :symbol)
-                                             (:position . 17)
-                                             (:form . "hello-world")
-                                             (:value . hello-world)))))))))
+        :edn '((nil t nil hello-world)))
 
        "qualified-symbol"
        (a-list
         :tags '(:edn-roundtrip)
         :source "clojure.string/join"
-        :edn '(clojure.string/join)
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :symbol)
-                              (:position . 1)
-                              (:form . "clojure.string/join")
-                              (:value . clojure.string/join))))))
+        :edn '(clojure.string/join))
 
        "nested-lists"
        (a-list
         :source "((.9 abc (true) (hello)))"
-        :edn '(((0.9 abc (t) (hello))))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :list)
-                                             (:position . 2)
-                                             (:children ((:node-type . :number)
-                                                         (:position . 3)
-                                                         (:form . ".9")
-                                                         (:value . 0.9))
-                                                        ((:node-type . :symbol)
-                                                         (:position . 6)
-                                                         (:form . "abc")
-                                                         (:value . abc))
-                                                        ((:node-type . :list)
-                                                         (:position . 10)
-                                                         (:children ((:node-type . :true)
-                                                                     (:position . 11)
-                                                                     (:form . "true")
-                                                                     (:value . t))))
-                                                        ((:node-type . :list)
-                                                         (:position . 17)
-                                                         (:children ((:node-type . :symbol)
-                                                                     (:position . 18)
-                                                                     (:form . "hello")
-                                                                     (:value . hello)))))))))))))
+        :edn '(((0.9 abc (t) (hello)))))
 
        "strings-1"
        (a-list
         :tags '(:edn-roundtrip)
         :source "\"abc hello \\t\\\"x\""
-        :edn '("abc hello \t\"x")
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :string)
-                              (:position . 1)
-                              (:form . "\"abc hello \\t\\\"x\"")
-                              (:value . "abc hello \t\"x"))))))
+        :edn '("abc hello \t\"x"))
 
        "strings-2"
        (a-list
         :source "(\"---\\f---\\\"-'\\'-\\\\-\\r\\n\")"
-        :edn '(("---\f---\"-''-\\-\r\n"))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :string)
-                                             (:position . 2)
-                                             (:form . "\"---\\f---\\\"-'\\'-\\\\-\\r\\n\"")
-                                             (:value . "---\f---\"-''-\\-\r\n")))))))))
+        :edn '(("---\f---\"-''-\\-\r\n")))
 
        "chars-1"
        (a-list
         :source "(\\newline \\return \\space \\tab \\a \\b \\c \\u0078 \\o171)"
-        :edn '((?\n ?\r ?\ ?\t ?a ?b ?c ?x ?y))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :character) (:position . 2) (:form . "\\newline") (:value . ?\n))
-                                            ((:node-type . :character) (:position . 11) (:form . "\\return") (:value . ?\r))
-                                            ((:node-type . :character) (:position . 19) (:form . "\\space") (:value . 32))
-                                            ((:node-type . :character) (:position . 26) (:form . "\\tab") (:value . ?\t))
-                                            ((:node-type . :character) (:position . 31) (:form . "\\a") (:value . ?a))
-                                            ((:node-type . :character) (:position . 34) (:form . "\\b") (:value . ?b))
-                                            ((:node-type . :character) (:position . 37) (:form . "\\c") (:value . ?c))
-                                            ((:node-type . :character) (:position . 40) (:form . "\\u0078") (:value . ?x))
-                                            ((:node-type . :character) (:position . 47) (:form . "\\o171") (:value . ?y)))))))))
+        :edn '((?\n ?\r ?\ ?\t ?a ?b ?c ?x ?y)))
 
        "chars-2"
        (a-list
         :source "\"\\u0078 \\o171\""
-        :edn '("x y")
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :string)
-                              (:position . 1)
-                              (:form . "\"\\u0078 \\o171\"")
-                              (:value . "x y"))))))
+        :edn '("x y"))
 
        "keywords"
        (a-list
         :tags '(:edn-roundtrip)
         :source ":foo-bar"
-        :edn '(:foo-bar)
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :keyword)
-                              (:position . 1)
-                              (:form . ":foo-bar")
-                              (:value . :foo-bar))))))
+        :edn '(:foo-bar))
 
        "vector"
        (a-list
         :tags '(:edn-roundtrip)
         :source "[123]"
-        :edn '([123])
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :vector)
-                              (:position . 1)
-                              (:children . (((:node-type . :number)
-                                             (:position . 2)
-                                             (:form . "123")
-                                             (:value . 123)))))))))
+        :edn '([123]))
 
        "map"
        (a-list
         :tags '(:edn-roundtrip)
         :source "{:count 123}"
-        :edn (list (a-hash-table :count 123))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :map)
-                              (:position . 1)
-                              (:children . (((:node-type . :keyword)
-                                             (:position . 2)
-                                             (:form . ":count")
-                                             (:value . :count))
-                                            ((:node-type . :number)
-                                             (:position . 9)
-                                             (:form . "123")
-                                             (:value . 123)))))))))
+        :edn (list (a-hash-table :count 123)))
 
        "prefixed-map-1"
        (a-list
         :source "#:foo.bar{:baz 1 :other.ns.prefix/qux 2}"
-        :edn (list (a-hash-table :foo.bar/baz 1 :other.ns.prefix/qux 2))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:map-prefix
-                               (:token-type . :map-prefix)
-                               (:form . "#:foo.bar")
-                               (:pos . 1))
-                              (:node-type . :map)
-                              (:position . 10)
-                              (:children . (((:node-type . :keyword)
-                                             (:position . 11)
-                                             (:form . ":baz")
-                                             (:value . :baz))
-                                            ((:node-type . :number)
-                                             (:position . 16)
-                                             (:form . "1")
-                                             (:value . 1))
-                                            ((:node-type . :keyword)
-                                             (:position . 18)
-                                             (:form . ":other.ns.prefix/qux")
-                                             (:value . :other.ns.prefix/qux))
-                                            ((:node-type . :number)
-                                             (:position . 39)
-                                             (:form . "2")
-                                             (:value . 2)))))))))
+        :edn (list (a-hash-table :foo.bar/baz 1 :other.ns.prefix/qux 2)))
 
        "prefixed-map-2"
        (a-list
         :source "#:foo.bar {:baz 1}"
-        :edn (list (a-hash-table :foo.bar/baz 1))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:map-prefix
-                               (:token-type . :map-prefix)
-                               (:form . "#:foo.bar")
-                               (:pos . 1))
-                              (:node-type . :map)
-                              (:position . 10)
-                              (:children . (((:node-type . :keyword)
-                                             (:position . 11)
-                                             (:form . ":baz")
-                                             (:value . :baz))
-                                            ((:node-type . :number)
-                                             (:position . 16)
-                                             (:form . "1")
-                                             (:value . 1)))))))))
+        :edn (list (a-hash-table :foo.bar/baz 1)))
 
        "set"
        (a-list
         :tags '(:edn-roundtrip)
         :source "#{:x}"
-        :edn '((edn-set (:x)))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :set)
-                              (:position . 1)
-                              (:children . (((:node-type . :keyword)
-                                             (:position . 3)
-                                             (:form . ":x")
-                                             (:value . :x)))))))))
+        :edn '((edn-set (:x))))
 
        "discard"
        (a-list
         :source "(10 #_11 12 #_#_ 13 14)"
-        :edn '((10 12))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :number)
-                                             (:position . 2)
-                                             (:form . "10")
-                                             (:value . 10))
-                                            ((:node-type . :number)
-                                             (:position . 10)
-                                             (:form . "12")
-                                             (:value . 12)))))))))
+        :edn '((10 12)))
 
 
        "tag-1"
@@ -332,71 +132,21 @@
         :tags '(:edn-roundtrip)
         :tag-readers '((:default . parseedn-tagged-literal))
         :source "#foo/bar [1]"
-        :edn '((edn-tagged-literal foo/bar [1]))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :tag)
-                              (:position . 1)
-                              (:tag . foo/bar)
-                              (:children . (((:node-type . :vector)
-                                             (:position . 10)
-                                             (:children . (((:node-type . :number)
-                                                            (:position . 11)
-                                                            (:form . "1")
-                                                            (:value . 1))))))))))))
+        :edn '((edn-tagged-literal foo/bar [1])))
 
        "tag-2"
        (a-list
         :tags '(:edn-roundtrip)
         :tag-readers '((:default . parseedn-tagged-literal))
         :source "(fn #param :param-name 1)"
-        :edn '((fn (edn-tagged-literal param :param-name) 1))
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children . (((:node-type . :list)
-                              (:position . 1)
-                              (:children . (((:node-type . :symbol)
-                                             (:position . 2)
-                                             (:form . "fn")
-                                             (:value . fn))
-                                            ((:node-type . :tag)
-                                             (:position . 5)
-                                             (:tag . param)
-                                             (:children . (((:node-type . :keyword)
-                                                            (:position . 12)
-                                                            (:form . ":param-name")
-                                                            (:value . :param-name)))))
-                                            ((:node-type . :number)
-                                             (:position . 24)
-                                             (:form . "1")
-                                             (:value . 1)))))))))
+        :edn '((fn (edn-tagged-literal param :param-name) 1)))
 
        "nested-tags"
        (a-list
         :tags '(:edn-roundtrip)
         :tag-readers '((:default . parseedn-tagged-literal))
         :edn (list (vector `(edn-tagged-literal lazy-error (edn-tagged-literal error ,(a-hash-table :cause "Divide by zero")))))
-        :source "[#lazy-error #error {:cause \"Divide by zero\"}]"
-        :ast '((:node-type . :root)
-               (:position . 1)
-               (:children ((:node-type . :vector)
-                           (:position . 1)
-                           (:children ((:node-type . :tag)
-                                       (:position . 2)
-                                       (:tag . lazy-error)
-                                       (:children ((:node-type . :tag)
-                                                   (:position . 14)
-                                                   (:tag . error)
-                                                   (:children ((:node-type . :map)
-                                                               (:position . 21)
-                                                               (:children ((:node-type . :keyword)
-                                                                           (:position . 22)
-                                                                           (:form . ":cause")
-                                                                           (:value . :cause))
-                                                                          ((:node-type . :string)
-                                                                           (:position . 29)
-                                                                           (:form . "\"Divide by zero\"")
-                                                                           (:value . "Divide by zero")))))))))))))
+        :source "[#lazy-error #error {:cause \"Divide by zero\"}]")
 
        "booleans"
        (a-list
