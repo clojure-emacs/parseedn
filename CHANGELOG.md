@@ -1,3 +1,10 @@
+# 1.2.0 (2023-09-29)
+
+- [#12](https://github.com/clojure-emacs/parseedn/issues/12): Allow empty vectors to be printed.
+- [#14](https://github.com/clojure-emacs/parseedn/pull/14): avoid C stack overflows.
+- [#15](https://github.com/clojure-emacs/parseedn/pull/15): correctly process empty hashmaps.
+- [#17](https://github.com/clojure-emacs/parseedn/pull/17): Add support for namespaced maps.
+
 # 1.1.0 (2022-02-07)
 
 - [#11](https://github.com/clojure-emacs/parseedn/pull/11) Support a default-data-reader for tagged literals
