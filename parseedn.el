@@ -92,6 +92,33 @@ on available options."
       stack
     (cons (parseclj-lex--leaf-token-value token) stack)))
 
+(defun parseedn--build-prefixed-map (prefix-token kvs)
+  "Build a map that has a prefix for non-qualified keywords.
+PREFIX-TOKEN is the AST token for the map prefix.
+KVS is a list of key, value pairs."
+  (let* ((hash-map (make-hash-table :test 'equal :size (length kvs)))
+         ;; map-prefix forms are always "#:...."
+         (map-prefix (substring (parseclj-lex-token-form prefix-token) 2)))
+    (seq-do (lambda (pair)
+              (let* ((key-name (substring (symbol-name (car pair)) 1))
+                     (k (if (string-match-p "/" key-name)
+                            ;; keyword is already qualified, we must not add the prefix.
+                            (car pair)
+                          (intern (concat ":" map-prefix "/" key-name))))
+                     (v (cadr pair)))
+                (puthash k v hash-map)))
+            kvs)
+    hash-map))
+
+(defun parseedn--build-non-prefixed-map (kvs)
+  "Build a non-prefixed map out of KVS.
+KVS is a list of pairs (key value)"
+  (let ((hash-map (make-hash-table :test 'equal :size (length kvs))))
+    (seq-do (lambda (pair)
+              (puthash (car pair) (cadr pair) hash-map))
+            kvs)
+    hash-map))
+
 (defun parseedn-reduce-branch (stack opening-token children options)
   "Reduce STACK with an sequence containing a collection of other elisp values.
 Ignores discard tokens.
@@ -106,42 +133,27 @@ on available options."
         (token-type (parseclj-lex-token-type opening-token)))
     (if (eq token-type :discard)
         stack
-      (cons
-       (cond
-        ((eq :root token-type) children)
-        ((eq :lparen token-type) children)
-        ((eq :lbracket token-type) (apply #'vector children))
-        ((eq :set token-type) (list 'edn-set children))
-        ((eq :lbrace token-type) (let* ((kvs (seq-partition children 2))
-                                        (hash-map (make-hash-table :test 'equal :size (length kvs)))
-                                        (prefixed-map? (eq :map-prefix (parseclj-lex-token-type (car stack))))
-                                        (map-prefix (when prefixed-map?
-                                                      ;; map-prefix forms are always "#:...."
-                                                      (substring (parseclj-lex-token-form (car stack)) 2))))
-                                   (seq-do (lambda (pair)
-                                             (let* ((k (if (not prefixed-map?)
-                                                           (car pair)
-                                                         (let ((key-name (substring (symbol-name (car pair)) 1)))
-                                                           (if (string-match-p "/" key-name)
-                                                               ;; keyword is already qualified, we must not add the prefix.
-                                                               (car pair)
-                                                             (intern (concat ":" map-prefix "/" key-name))))))
-                                                    (v (cadr pair)))
-                                               (puthash k v hash-map)))
-                                           kvs)
-                                   (when prefixed-map?
-                                     (setq stack (cdr stack)))
-                                   hash-map))
-        ((eq :tag token-type) (let* ((tag (intern (substring (alist-get :form opening-token) 1)))
-                                     (reader (alist-get tag tag-readers))
-                                     (default-reader (alist-get :default tag-readers parseedn-default-data-reader-fn)))
+      (cond
+       ((eq :root token-type) (cons children stack))
+       ((eq :lparen token-type) (cons children stack))
+       ((eq :lbracket token-type) (cons (apply #'vector children) stack))
+       ((eq :set token-type) (cons (list 'edn-set children) stack))
+       ((eq :lbrace token-type) (let* ((kvs (seq-partition children 2))
+                                       (prefixed-map? (eq :map-prefix (parseclj-lex-token-type (car stack)))))
+                                  (if prefixed-map?
+                                      (cons (parseedn--build-prefixed-map (car stack) kvs) (cdr stack))
+                                    (cons (parseedn--build-non-prefixed-map kvs) stack))))
+       ((eq :tag token-type) (let* ((tag (intern (substring (alist-get :form opening-token) 1)))
+                                    (reader (alist-get tag tag-readers))
+                                    (default-reader (alist-get :default tag-readers parseedn-default-data-reader-fn)))
+                               (cons
                                 (cond
                                  ((functionp reader)
                                   (funcall reader (car children)))
                                  ((functionp default-reader)
                                   (funcall default-reader tag (car children)))
-                                 (t (user-error "No reader for tag #%S in %S" tag (map-keys tag-readers)))))))
-       stack))))
+                                 (t (user-error "No reader for tag #%S in %S" tag (map-keys tag-readers))))
+                                stack)))))))
 
 (defun parseedn-read (&optional tag-readers)
   "Read content from current buffer and parse it as EDN source.
