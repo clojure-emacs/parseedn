@@ -1,3 +1,7 @@
+# 1.2.1 (2023-12-03)
+
+- Update parseclj to [1.1.1](https://github.com/clojure-emacs/parseclj/blob/v1.1.1/CHANGELOG.md#111-2022-02-07).
+
 # 1.2.0 (2023-09-29)
 
 - [#12](https://github.com/clojure-emacs/parseedn/issues/12): Allow empty vectors to be printed.
