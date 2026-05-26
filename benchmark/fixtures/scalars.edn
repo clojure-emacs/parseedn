@@ -1,0 +1,11 @@
+[nil false true
+ 0 1 -1 42 999999999
+ 3.14 -0.125 6.022e23
+ "simple"
+ "with spaces"
+ "with escapes \n \t \"quote\" \\slash"
+ :keyword
+ :ns/keyword
+ symbol
+ ns/symbol
+ \\newline \\space \\tab]

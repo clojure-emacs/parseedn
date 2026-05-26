@@ -1,0 +1,5 @@
+{:numbers [1 2 3 4 5 6 7 8 9 10]
+ :nested {:alpha [1 2 {:beta (3 4 5) :gamma #{:a :b :c}}]
+          :delta [{:x 1 :y 2} {:x 3 :y 4} {:x 5 :y 6}]}
+ :listy ((:a :b) (:c :d) (:e :f))
+ :mixed [#{1 2 3} {:k1 [:v1 :v2] :k2 (:v3 :v4)} "tail"]}

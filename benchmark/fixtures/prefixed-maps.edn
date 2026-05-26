@@ -1,0 +1,6 @@
+[#:user{:id 1 :name "Ada" :email "ada@example.test"}
+ #:account{:id 2 :user/name "Grace" :status :active}
+ {:plain #:order{:id 3 :total 42.0 :status :shipped}
+  :nested [#:item{:sku "A-1" :qty 2}
+           #:item{:sku "B-2" :qty 4}
+           #:item{:sku "C-3" :qty 8}]}]
