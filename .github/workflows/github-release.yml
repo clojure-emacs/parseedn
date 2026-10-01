@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # The release notes are the version's section of the changelog. If it
       # has none, fall back to GitHub's generated notes rather than publish
